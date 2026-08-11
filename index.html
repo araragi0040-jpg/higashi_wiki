@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>内部Wiki 閲覧版デモ（シンプル）</title>
+  <meta name="theme-color" content="#f4f2ee" />
+  <title>コミュニティ名鑑</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="app-shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">内部Wiki / 閲覧デモ</p>
+        <p class="eyebrow">内部Wiki / 閲覧版</p>
         <h1>コミュニティ名鑑</h1>
       </div>
-      <div class="topbar-meta">閲覧専用・シンプル版</div>
+      <div class="topbar-meta" id="dataStatus">スプレッドシート読込中…</div>
     </header>
 
     <main class="layout">
@@ -26,61 +27,72 @@
 
           <div class="dropdown-body" id="personDropdownBody">
             <div class="search-box">
-              <input type="search" id="personSearchInput" placeholder="人物名で検索" />
+              <input type="search" id="personSearchInput" placeholder="人物名で検索" autocomplete="off" />
             </div>
-            <div class="person-list" id="personList"></div>
+            <div class="person-list" id="personList">
+              <div class="empty-state">読み込んでいます…</div>
+            </div>
           </div>
         </div>
       </aside>
 
       <section class="content">
         <article class="detail-card" id="detailCard">
-          <div class="hero-image" id="detailImage"></div>
+          <div class="empty-detail" id="initialMessage">
+            <h2>人物データを読み込んでいます</h2>
+            <p>Googleスプレッドシートの公開データを取得しています。</p>
+          </div>
 
-          <div class="detail-inner">
-            <div class="title-row">
-              <div>
-                <p class="detail-kicker">人物ファイル</p>
-                <h2 id="detailName">-</h2>
-                <p class="detail-subtitle" id="detailSubtitle">-</p>
+          <div id="personDetail" hidden>
+            <div class="hero-image" id="detailImage"></div>
+
+            <div class="detail-inner">
+              <div class="title-row">
+                <div>
+                  <p class="detail-kicker">人物ファイル</p>
+                  <h2 id="detailName">-</h2>
+                  <p class="detail-role" id="detailRole"></p>
+                  <p class="detail-subtitle" id="detailSubtitle">-</p>
+                </div>
               </div>
+
+              <section class="section-block" id="profileSection">
+                <h3>プロフィール</h3>
+                <div class="profile-list" id="profileList"></div>
+              </section>
+
+              <section class="section-block" id="featureSection">
+                <h3>主な特徴・人物像</h3>
+                <div class="text-content" id="featureText"></div>
+              </section>
+
+              <section class="section-block" id="historySection">
+                <h3>人物</h3>
+                <div class="text-content" id="historyText"></div>
+              </section>
+
+              <section class="section-block" id="worksSection">
+                <h3>活動事業</h3>
+                <div class="accordion-list" id="worksAccordion"></div>
+              </section>
+
+              <section class="section-block" id="hobbiesSection">
+                <h3>趣味・嗜好</h3>
+                <div class="accordion-list" id="hobbiesAccordion"></div>
+              </section>
+
+              <section class="section-block" id="favoritesSection">
+                <h3>好きなもの / 作品</h3>
+                <div class="accordion-list" id="favoritesAccordion"></div>
+              </section>
             </div>
-
-            <section class="section-block profile-grid">
-              <h3>プロフィール</h3>
-              <div class="profile-list" id="profileList"></div>
-            </section>
-
-            <section class="section-block">
-              <h3>主な特徴・人物像</h3>
-              <div class="text-content" id="featureText"></div>
-            </section>
-
-            <section class="section-block">
-              <h3>人物</h3>
-              <div class="text-content" id="historyText"></div>
-            </section>
-
-            <section class="section-block">
-              <h3>活動事業</h3>
-              <div class="accordion-list" id="worksAccordion"></div>
-            </section>
-
-            <section class="section-block">
-              <h3>趣味・嗜好</h3>
-              <div class="accordion-list" id="hobbiesAccordion"></div>
-            </section>
-
-            <section class="section-block">
-              <h3>好きなもの / 作品</h3>
-              <div class="accordion-list" id="favoritesAccordion"></div>
-            </section>
           </div>
         </article>
       </section>
     </main>
   </div>
 
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,210 +1,329 @@
-const people = [
-  {
-    id: 'yuuki',
-    name: '結城 悠樹',
-    role: '企画協力 / 思想対話',
-    subtitle: '柔らかい第一印象と、深い構造理解を併せ持つ人物として整理されたサンプルページ。',
-    image: 'linear-gradient(135deg, #d8c1aa 0%, #b37e57 45%, #7a5847 100%)',
-    profile: [
-      ['名前', '結城 悠樹（ゆうき ゆうき）'],
-      ['立場', 'コミュニティメンバー / 企画協力'],
-      ['所属', '西野亮廣オンラインサロン ほか'],
-      ['出会い', '2017年10月頃'],
-    ],
-    features: [
-      '温和な性格で知られ、第一印象としては「柔らかく、話しやすい人」と評されることが多い。',
-      '一方で、心理学や宗教学に関する深い知見と、構造的思考による分析力を併せ持つため、感覚的な問いに対しても理論的裏づけを添える形で応答する力に長けている。',
-      'また、武道、特に居合を嗜んでおり、静かな外見の裏に身体性と精神性の統合を感じさせる内面性を有する。'
-    ],
-    history: [
-      '2017年10月に西野亮廣オンラインサロンメンバーが主催するイベントに来場者として参加。このイベントで、スタッフとして参加していた人物と出会う。',
-      '以後、複数回にわたる対話や交流を通じて、哲学的思索や感情、自己理解に関する対話の機会を深めていく。',
-      '同年以降も非公開イベントや日常的な対話の中で、構想に対して学術的・思想的な裏づけを与える存在としてたびたび登場している。'
-    ],
-    works: [
-      ['コーチング', '本人の内面整理や視点の言語化に関わるサポートを行う。'],
-      ['対話・企画伴走', '企画の土台整理、思想的背景の補助、方向性の言語化などを担うことがある。'],
-      ['介護職', '対人支援と現場性を含んだ実務経験を持つ。']
-    ],
-    hobbies: [
-      ['タロット', '読み解きよりも象徴体系そのものへの興味が強い。'],
-      ['居合', '身体の軸や静けさに向き合う時間として継続。'],
-      ['カメラ', '構図や空気感を切り取ることに関心がある。']
-    ],
-    favorites: [
-      ['ファイブスター物語', '世界観構築・思想性・造形美に惹かれている。'],
-      ['シュタインズ・ゲート', '構造や伏線、時間軸の組み立てへの評価が高い。'],
-      ['銀河英雄伝説', '人物思想と組織構造の両面から好んでいる。'],
-      ['鋼の錬金術師', '哲学と物語が接続された作品として印象深い。']
-    ]
-  },
-  {
-    id: 'misaki',
-    name: '朝倉 美咲',
-    role: '交流サポート',
-    subtitle: '初参加者との会話の入口づくりや、場の緊張をほどく役割を担う人物サンプル。',
-    image: 'linear-gradient(135deg, #e6d6d1 0%, #c5988c 45%, #8e6f69 100%)',
-    profile: [
-      ['名前', '朝倉 美咲（あさくら みさき）'],
-      ['立場', '交流サポート'],
-      ['役割', '初参加者フォロー / 受付補助'],
-      ['関わり', '月例交流会'],
-    ],
-    features: [
-      '初参加者でも入りやすい雰囲気をつくることに長けており、場の緊張を自然にほどく存在として認識されている。',
-      '会話を広げるというより、相手が話しやすい状態をつくる支え方に強みがある。'
-    ],
-    history: [
-      '交流会の受付補助から関わりが始まり、現在は新規参加者への導線づくりやフォローに関わる。',
-      'イベント時には、全体進行よりも個別の安心感づくりを担うことが多い。'
-    ],
-    works: [
-      ['受付補助', '最初の案内や場の導入を担当することがある。'],
-      ['交流サポート', '一人になりがちな人へ自然に声をかける。']
-    ],
-    hobbies: [
-      ['読書', '心理やエッセイ系の本を好んで読む。'],
-      ['散歩', '考えを整理する時間として大切にしている。']
-    ],
-    favorites: [
-      ['やさしい言葉の本', '押しつけずに寄り添う表現を好む。'],
-      ['静かなカフェ', '落ち着いて話せる空間が好き。']
-    ]
-  },
-  {
-    id: 'takumi',
-    name: '高瀬 匠',
-    role: '企画運営',
-    subtitle: '全体の流れや企画進行を整理する、運営寄り人物のサンプル。',
-    image: 'linear-gradient(135deg, #d8d9cb 0%, #a6ac8b 45%, #69725f 100%)',
-    profile: [
-      ['名前', '高瀬 匠（たかせ たくみ）'],
-      ['立場', '企画運営'],
-      ['役割', '進行設計 / 当日調整'],
-      ['関わり', 'イベント企画全般'],
-    ],
-    features: [
-      '全体の流れを整理し、当日の動線や役割分担を見通して調整することを得意とする。',
-      '前に出るというより、裏側で形を整えるタイプの人物。'
-    ],
-    history: [
-      'イベント立ち上げ初期から運営側で関わり、進行設計や実務整理を担当。',
-      '現在は企画案のたたき台づくりや役割整理でも中心的に関わる。'
-    ],
-    works: [
-      ['進行設計', '企画の流れと当日の段取りを整理する。'],
-      ['役割調整', '必要な人員配置や動線を調整する。']
-    ],
-    hobbies: [
-      ['ノート整理', '思考を図式化してまとめることが好き。'],
-      ['コーヒー', '作業前の切り替えとして楽しんでいる。']
-    ],
-    favorites: [
-      ['作業しやすい文具', '整った道具にこだわりがある。'],
-      ['設計系コンテンツ', '構造を分解して見ることが好き。']
-    ]
-  }
-];
+(() => {
+  "use strict";
 
-const personList = document.getElementById('personList');
-const personSearchInput = document.getElementById('personSearchInput');
-const personDropdownTrigger = document.getElementById('personDropdownTrigger');
-const personDropdownBody = document.getElementById('personDropdownBody');
+  const config = window.WIKI_CONFIG || {};
+  const elements = {
+    dataStatus: document.getElementById("dataStatus"),
+    personList: document.getElementById("personList"),
+    personSearchInput: document.getElementById("personSearchInput"),
+    personDropdownTrigger: document.getElementById("personDropdownTrigger"),
+    personDropdownBody: document.getElementById("personDropdownBody"),
+    initialMessage: document.getElementById("initialMessage"),
+    personDetail: document.getElementById("personDetail"),
+    detailImage: document.getElementById("detailImage"),
+    detailName: document.getElementById("detailName"),
+    detailRole: document.getElementById("detailRole"),
+    detailSubtitle: document.getElementById("detailSubtitle"),
+    profileList: document.getElementById("profileList"),
+    featureText: document.getElementById("featureText"),
+    historyText: document.getElementById("historyText"),
+    worksAccordion: document.getElementById("worksAccordion"),
+    hobbiesAccordion: document.getElementById("hobbiesAccordion"),
+    favoritesAccordion: document.getElementById("favoritesAccordion"),
+    profileSection: document.getElementById("profileSection"),
+    featureSection: document.getElementById("featureSection"),
+    historySection: document.getElementById("historySection"),
+    worksSection: document.getElementById("worksSection"),
+    hobbiesSection: document.getElementById("hobbiesSection"),
+    favoritesSection: document.getElementById("favoritesSection")
+  };
 
-const detailImage = document.getElementById('detailImage');
-const detailName = document.getElementById('detailName');
-const detailSubtitle = document.getElementById('detailSubtitle');
-const profileList = document.getElementById('profileList');
-const featureText = document.getElementById('featureText');
-const historyText = document.getElementById('historyText');
-const worksAccordion = document.getElementById('worksAccordion');
-const hobbiesAccordion = document.getElementById('hobbiesAccordion');
-const favoritesAccordion = document.getElementById('favoritesAccordion');
+  let people = [];
+  let currentPersonId = null;
+  let timeoutId = null;
+  let jsonpScript = null;
 
-let currentPersonId = people[0].id;
-
-function renderPersonList(query = '') {
-  const normalized = query.trim().toLowerCase();
-  const filtered = people.filter((person) => {
-    const haystack = `${person.name} ${person.role} ${person.subtitle}`.toLowerCase();
-    return haystack.includes(normalized);
-  });
-
-  if (!filtered.length) {
-    personList.innerHTML = '<div class="empty-state">該当する人物がありません。</div>';
-    return;
+  function setStatus(text, type = "") {
+    elements.dataStatus.textContent = text;
+    elements.dataStatus.classList.remove("is-ok", "is-error");
+    if (type) elements.dataStatus.classList.add(type);
   }
 
-  personList.innerHTML = filtered.map((person) => `
-    <button class="person-item ${person.id === currentPersonId ? 'is-active' : ''}" data-person-id="${person.id}">
-      <span class="person-name">${person.name}</span>
-      <span class="person-role">${person.role}</span>
-    </button>
-  `).join('');
+  function showMessage(title, text, isError = false) {
+    elements.personDetail.hidden = true;
+    elements.initialMessage.hidden = false;
+    elements.initialMessage.innerHTML = "";
 
-  personList.querySelectorAll('.person-item').forEach((button) => {
-    button.addEventListener('click', () => {
-      currentPersonId = button.dataset.personId;
-      renderPersonList(personSearchInput.value);
-      renderDetail(currentPersonId);
+    const heading = document.createElement("h2");
+    heading.textContent = title;
+    const paragraph = document.createElement("p");
+    paragraph.textContent = text;
+    elements.initialMessage.append(heading, paragraph);
+
+    if (isError) setStatus("データ取得エラー", "is-error");
+  }
+
+  function parseParagraphs(value) {
+    return String(value || "")
+      .replace(/\r\n/g, "\n")
+      .split(/\n\s*\n/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  function parsePairs(value) {
+    return String(value || "")
+      .replace(/\r\n/g, "\n")
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => {
+        const fullWidthIndex = line.indexOf("｜");
+        const normalIndex = line.indexOf("|");
+        const separatorIndex = fullWidthIndex >= 0 ? fullWidthIndex : normalIndex;
+
+        if (separatorIndex < 0) return [line, ""];
+        return [
+          line.slice(0, separatorIndex).trim(),
+          line.slice(separatorIndex + 1).trim()
+        ];
+      });
+  }
+
+  function normalizePerson(raw) {
+    return {
+      id: String(raw.id || "").trim(),
+      name: String(raw.name || "").trim(),
+      reading: String(raw.reading || "").trim(),
+      role: String(raw.role || "").trim(),
+      subtitle: String(raw.subtitle || "").trim(),
+      profile: parsePairs(raw.profile),
+      features: parseParagraphs(raw.features),
+      history: parseParagraphs(raw.history),
+      works: parsePairs(raw.works),
+      hobbies: parsePairs(raw.hobbies),
+      favorites: parsePairs(raw.favorites),
+      imageUrl: String(raw.imageUrl || "").trim(),
+      order: Number(raw.order || 9999)
+    };
+  }
+
+  function renderPersonList(query = "") {
+    const normalizedQuery = query.trim().toLowerCase();
+    const filtered = people.filter((person) => {
+      const haystack = `${person.name} ${person.reading} ${person.role} ${person.subtitle}`.toLowerCase();
+      return haystack.includes(normalizedQuery);
     });
-  });
-}
 
-function renderParagraphs(target, items) {
-  target.innerHTML = items.map((text) => `<p>${text}</p>`).join('');
-}
+    elements.personList.innerHTML = "";
 
-function renderProfile(profile) {
-  profileList.innerHTML = profile.map(([label, value]) => `
-    <div class="profile-row">
-      <div class="profile-label">${label}</div>
-      <div class="profile-value">${value}</div>
-    </div>
-  `).join('');
-}
+    if (!filtered.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty-state";
+      empty.textContent = people.length ? "該当する人物がありません。" : "公開中の人物データがありません。";
+      elements.personList.appendChild(empty);
+      return;
+    }
 
-function createAccordion(target, items) {
-  target.innerHTML = items.map(([label, content], index) => `
-    <div class="accordion-item ${index === 0 ? 'open' : ''}">
-      <button class="accordion-trigger">
-        <span>${label}</span>
-        <span>▾</span>
-      </button>
-      <div class="accordion-body">${content}</div>
-    </div>
-  `).join('');
+    filtered.forEach((person) => {
+      const button = document.createElement("button");
+      button.className = `person-item${person.id === currentPersonId ? " is-active" : ""}`;
+      button.type = "button";
+      button.dataset.personId = person.id;
 
-  target.querySelectorAll('.accordion-trigger').forEach((button) => {
-    button.addEventListener('click', () => {
-      button.parentElement.classList.toggle('open');
+      const name = document.createElement("span");
+      name.className = "person-name";
+      name.textContent = person.name;
+      button.appendChild(name);
+
+      if (person.role) {
+        const role = document.createElement("span");
+        role.className = "person-role";
+        role.textContent = person.role;
+        button.appendChild(role);
+      }
+
+      button.addEventListener("click", () => selectPerson(person.id));
+      elements.personList.appendChild(button);
     });
+  }
+
+  function renderProfile(profile) {
+    elements.profileList.innerHTML = "";
+    profile.forEach(([label, value]) => {
+      const row = document.createElement("div");
+      row.className = "profile-row";
+      const labelEl = document.createElement("div");
+      labelEl.className = "profile-label";
+      labelEl.textContent = label;
+      const valueEl = document.createElement("div");
+      valueEl.className = "profile-value";
+      valueEl.textContent = value || "—";
+      row.append(labelEl, valueEl);
+      elements.profileList.appendChild(row);
+    });
+  }
+
+  function renderParagraphs(target, paragraphs) {
+    target.innerHTML = "";
+    paragraphs.forEach((text) => {
+      const p = document.createElement("p");
+      p.textContent = text;
+      target.appendChild(p);
+    });
+  }
+
+  function createAccordion(target, items) {
+    target.innerHTML = "";
+    items.forEach(([label, content], index) => {
+      const item = document.createElement("div");
+      item.className = `accordion-item${index === 0 ? " open" : ""}`;
+
+      const trigger = document.createElement("button");
+      trigger.type = "button";
+      trigger.className = "accordion-trigger";
+      trigger.setAttribute("aria-expanded", String(index === 0));
+
+      const title = document.createElement("span");
+      title.textContent = label;
+      const arrow = document.createElement("span");
+      arrow.textContent = "▾";
+      trigger.append(title, arrow);
+
+      const body = document.createElement("div");
+      body.className = "accordion-body";
+      body.textContent = content || "詳細情報はありません。";
+
+      trigger.addEventListener("click", () => {
+        const isOpen = item.classList.toggle("open");
+        trigger.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      item.append(trigger, body);
+      target.appendChild(item);
+    });
+  }
+
+  function toggleSection(section, hasContent) {
+    section.hidden = !hasContent;
+  }
+
+  function renderDetail(personId) {
+    const person = people.find((item) => item.id === personId);
+    if (!person) return;
+
+    elements.initialMessage.hidden = true;
+    elements.personDetail.hidden = false;
+    elements.detailName.textContent = person.name || "名称未設定";
+    elements.detailRole.textContent = person.role;
+    elements.detailRole.hidden = !person.role;
+    elements.detailSubtitle.textContent = person.subtitle;
+    elements.detailSubtitle.hidden = !person.subtitle;
+
+    if (person.imageUrl) {
+      elements.detailImage.style.backgroundImage = `url(${JSON.stringify(person.imageUrl)})`;
+      elements.detailImage.style.backgroundColor = "#d8c1aa";
+    } else {
+      elements.detailImage.style.backgroundImage = "linear-gradient(135deg, #d8c1aa 0%, #b37e57 45%, #7a5847 100%)";
+    }
+
+    renderProfile(person.profile);
+    renderParagraphs(elements.featureText, person.features);
+    renderParagraphs(elements.historyText, person.history);
+    createAccordion(elements.worksAccordion, person.works);
+    createAccordion(elements.hobbiesAccordion, person.hobbies);
+    createAccordion(elements.favoritesAccordion, person.favorites);
+
+    toggleSection(elements.profileSection, person.profile.length > 0);
+    toggleSection(elements.featureSection, person.features.length > 0);
+    toggleSection(elements.historySection, person.history.length > 0);
+    toggleSection(elements.worksSection, person.works.length > 0);
+    toggleSection(elements.hobbiesSection, person.hobbies.length > 0);
+    toggleSection(elements.favoritesSection, person.favorites.length > 0);
+  }
+
+  function selectPerson(personId) {
+    currentPersonId = personId;
+    renderPersonList(elements.personSearchInput.value);
+    renderDetail(personId);
+
+    // スマホでは人物選択後にリストを閉じ、本文を読みやすくする。
+    if (window.matchMedia("(max-width: 900px)").matches) {
+      elements.personDropdownTrigger.classList.remove("is-open");
+      elements.personDropdownTrigger.setAttribute("aria-expanded", "false");
+      elements.personDropdownBody.classList.add("is-hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  function clearRequestTimer() {
+    if (timeoutId) {
+      window.clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  }
+
+  function cleanupJsonpScript() {
+    if (jsonpScript && jsonpScript.parentNode) jsonpScript.parentNode.removeChild(jsonpScript);
+    jsonpScript = null;
+  }
+
+  window.wikiDataCallback = (payload) => {
+    clearRequestTimer();
+    cleanupJsonpScript();
+
+    if (!payload || payload.ok !== true || !Array.isArray(payload.people)) {
+      showMessage("データを取得できませんでした", payload?.error || "Apps Script 側の設定を確認してください。", true);
+      return;
+    }
+
+    people = payload.people
+      .map(normalizePerson)
+      .filter((person) => person.id && person.name)
+      .sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, "ja"));
+
+    setStatus(`${people.length}人を読込済`, "is-ok");
+    renderPersonList();
+
+    if (!people.length) {
+      showMessage("公開中の人物がありません", "スプレッドシートの「公開」列をTRUEにすると表示されます。", false);
+      return;
+    }
+
+    currentPersonId = people[0].id;
+    renderPersonList();
+    renderDetail(currentPersonId);
+  };
+
+  function loadWikiData() {
+    const url = String(config.GAS_WEB_APP_URL || "").trim();
+    if (!url || url.includes("PASTE_YOUR_GAS_WEB_APP_URL_HERE")) {
+      elements.personList.innerHTML = '<div class="empty-state">config.js に Apps Script のウェブアプリURLを設定してください。</div>';
+      showMessage("初期設定が必要です", "config.js に Google Apps Script の /exec URL を貼り付けると、スプレッドシートの人物データを表示します。", true);
+      setStatus("URL未設定", "is-error");
+      return;
+    }
+
+    setStatus("スプレッドシート読込中…");
+    const callback = encodeURIComponent(config.CALLBACK_NAME || "wikiDataCallback");
+    const separator = url.includes("?") ? "&" : "?";
+    const src = `${url}${separator}prefix=${callback}&_=${Date.now()}`;
+
+    jsonpScript = document.createElement("script");
+    jsonpScript.src = src;
+    jsonpScript.async = true;
+    jsonpScript.onerror = () => {
+      clearRequestTimer();
+      cleanupJsonpScript();
+      showMessage("データを取得できませんでした", "Apps Script の公開設定または config.js のURLを確認してください。", true);
+    };
+    document.body.appendChild(jsonpScript);
+
+    timeoutId = window.setTimeout(() => {
+      cleanupJsonpScript();
+      showMessage("読み込みがタイムアウトしました", "通信環境または Apps Script の公開設定を確認してください。", true);
+    }, Number(config.REQUEST_TIMEOUT_MS || 15000));
+  }
+
+  elements.personSearchInput.addEventListener("input", (event) => {
+    renderPersonList(event.target.value);
   });
-}
 
-function renderDetail(personId) {
-  const person = people.find((item) => item.id === personId) || people[0];
-  detailImage.style.background = person.image;
-  detailName.textContent = person.name;
-  detailSubtitle.textContent = person.subtitle;
+  elements.personDropdownTrigger.addEventListener("click", () => {
+    const isOpen = elements.personDropdownTrigger.classList.toggle("is-open");
+    elements.personDropdownTrigger.setAttribute("aria-expanded", String(isOpen));
+    elements.personDropdownBody.classList.toggle("is-hidden", !isOpen);
+  });
 
-  renderProfile(person.profile);
-  renderParagraphs(featureText, person.features);
-  renderParagraphs(historyText, person.history);
-  createAccordion(worksAccordion, person.works);
-  createAccordion(hobbiesAccordion, person.hobbies);
-  createAccordion(favoritesAccordion, person.favorites);
-}
-
-personSearchInput.addEventListener('input', (event) => {
-  renderPersonList(event.target.value);
-});
-
-personDropdownTrigger.addEventListener('click', () => {
-  const isOpen = personDropdownTrigger.classList.toggle('is-open');
-  personDropdownTrigger.setAttribute('aria-expanded', String(isOpen));
-  personDropdownBody.classList.toggle('is-hidden', !isOpen);
-});
-
-renderPersonList();
-renderDetail(currentPersonId);
+  loadWikiData();
+})();
