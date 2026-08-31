@@ -2,56 +2,125 @@
   "use strict";
 
   const config = window.WIKI_CONFIG || {};
+
+  const demoPeople = [
+    {
+      id: "demo-totto",
+      name: "トット",
+      reading: "とっと",
+      status: "オンライン",
+      role: "対話と場づくり",
+      subtitle: "問いを深め、つなげ、形にする人。人の想いを引き出し、対話を通じて次の一歩を一緒につくります。",
+      tags: "対話が好き｜問いづくり｜コミュニティづくり",
+      mainArea: "オンライン / 大阪・京都",
+      themes: "教育・地域・人の可能性",
+      currentWork: "語り場 / ○○プロジェクト",
+      availableTime: "平日 夜 / 土日 日中",
+      story: "人の中にある言葉になりきらない想いを引き出し、対話を通じて新しい可能性を一緒に探すのが好きです。人と人、想いと想いをつなぎ、形にしていくプロセスにワクワクします。",
+      values: "好奇心｜多様性｜自由と責任｜信頼",
+      together: "モヤモヤしている問い、形にしたい想い、誰かと一緒に考えたいこと。気軽に話しかけてもらえたらうれしいです。",
+      questions: "どうすれば、一人ひとりが自分らしく生きられる？\n対話から生まれる可能性とは？\n安心感のある場をどうつくる？",
+      likes: "対話すること｜人の話を聴くこと｜場をつくること｜旅・自然",
+      influences: "教育・哲学・旅・地域の人たちの生き方",
+      profile: "活動拠点｜大阪・京都 / オンライン\n得意なこと｜対話、問いづくり、企画整理\n大切にしていること｜その人自身の言葉を急がずに見つける",
+      features: "柔らかく話しやすい雰囲気を持ちながら、感覚的な問いにも構造をつけて考えるタイプ。",
+      history: "コミュニティ活動やイベント企画を通じて、人が自然につながる場づくりに関わる。\n\n最近は、対話を起点にした企画や学びの場にも取り組んでいる。",
+      personStory: "人と話している中で生まれた問いを、その場だけで終わらせず次の活動につなげることが多い。",
+      works: "対話の場づくり｜少人数の対話会や交流の場を企画。\n企画伴走｜アイデアを整理し、形になるところまで一緒に考える。",
+      hobbies: "旅｜知らない土地を歩き、人や文化に触れること。\n自然｜山や海など、静かに過ごせる場所が好き。",
+      favorites: "本｜対話・哲学・人間理解に関するもの。\n音楽｜その時の気分に合わせて幅広く聴く。",
+      imageUrl: "",
+      order: 1
+    },
+    {
+      id: "demo-aoi",
+      name: "アオイ",
+      reading: "あおい",
+      status: "",
+      role: "企画・デザイン",
+      subtitle: "人や活動の魅力を整理して、伝わる形にすることが好きです。",
+      tags: "企画｜デザイン｜表現",
+      mainArea: "東京 / オンライン",
+      themes: "表現・働き方・学び",
+      currentWork: "クリエイティブ企画",
+      availableTime: "平日 夜",
+      story: "誰かが持っている魅力や背景を見つけ、言葉やデザインで伝わる形に整えることを大切にしています。",
+      values: "余白｜対等さ｜遊び心",
+      together: "まだ言葉になっていない企画を、一緒に整理して形にしてみたいです。",
+      questions: "その人らしさは、どこに現れる？\n伝えることで何が変わる？",
+      likes: "写真｜展示を見る｜街を歩く｜デザイン",
+      influences: "雑誌編集・写真集・街の小さなお店",
+      profile: "活動拠点｜東京 / オンライン\n得意なこと｜企画、編集、ビジュアル整理",
+      features: "観察してから動くタイプ。細かな違和感や良さを拾うのが得意。",
+      history: "制作活動をしながら、コミュニティ内の企画や広報にも参加。",
+      personStory: "",
+      works: "企画編集｜情報を整理し、企画の軸をつくる。\nデザイン｜告知物やWebの見え方を整える。",
+      hobbies: "写真｜日常の風景を撮る。",
+      favorites: "映画｜静かな余韻が残る作品。",
+      imageUrl: "",
+      order: 2
+    }
+  ];
+
+  const $ = (id) => document.getElementById(id);
   const elements = {
-    dataStatus: document.getElementById("dataStatus"),
-    personList: document.getElementById("personList"),
-    personSearchInput: document.getElementById("personSearchInput"),
-    personDropdownTrigger: document.getElementById("personDropdownTrigger"),
-    personDropdownBody: document.getElementById("personDropdownBody"),
-    initialMessage: document.getElementById("initialMessage"),
-    personDetail: document.getElementById("personDetail"),
-    detailImage: document.getElementById("detailImage"),
-    detailName: document.getElementById("detailName"),
-    detailRole: document.getElementById("detailRole"),
-    detailSubtitle: document.getElementById("detailSubtitle"),
-    profileList: document.getElementById("profileList"),
-    featureText: document.getElementById("featureText"),
-    historyText: document.getElementById("historyText"),
-    worksAccordion: document.getElementById("worksAccordion"),
-    hobbiesAccordion: document.getElementById("hobbiesAccordion"),
-    favoritesAccordion: document.getElementById("favoritesAccordion"),
-    profileSection: document.getElementById("profileSection"),
-    featureSection: document.getElementById("featureSection"),
-    historySection: document.getElementById("historySection"),
-    worksSection: document.getElementById("worksSection"),
-    hobbiesSection: document.getElementById("hobbiesSection"),
-    favoritesSection: document.getElementById("favoritesSection")
+    directoryView: $("directoryView"),
+    detailView: $("detailView"),
+    personList: $("personList"),
+    resultCount: $("resultCount"),
+    dataStatus: $("dataStatus"),
+    searchToggleButton: $("searchToggleButton"),
+    searchPanel: $("searchPanel"),
+    personSearchInput: $("personSearchInput"),
+    backButton: $("backButton"),
+    topbarPersonName: $("topbarPersonName"),
+    detailImage: $("detailImage"),
+    heroPlaceholder: $("heroPlaceholder"),
+    heroInitial: $("heroInitial"),
+    detailName: $("detailName"),
+    detailStatus: $("detailStatus"),
+    statusText: $("statusText"),
+    detailRole: $("detailRole"),
+    detailSubtitle: $("detailSubtitle"),
+    detailTags: $("detailTags"),
+    storySection: $("storySection"),
+    storyText: $("storyText"),
+    profileSection: $("profileSection"),
+    profileList: $("profileList"),
+    featureSection: $("featureSection"),
+    featureText: $("featureText"),
+    valuesSummarySection: $("valuesSummarySection"),
+    valueChips: $("valueChips"),
+    togetherSection: $("togetherSection"),
+    togetherText: $("togetherText"),
+    questionsSection: $("questionsSection"),
+    questionList: $("questionList"),
+    likesSection: $("likesSection"),
+    likesChips: $("likesChips"),
+    influencesSection: $("influencesSection"),
+    influencesText: $("influencesText"),
+    hobbiesSection: $("hobbiesSection"),
+    hobbiesList: $("hobbiesList"),
+    favoritesSection: $("favoritesSection"),
+    favoritesList: $("favoritesList"),
+    quickFactsSection: $("quickFactsSection"),
+    quickFacts: $("quickFacts"),
+    worksSection: $("worksSection"),
+    worksList: $("worksList"),
+    historySection: $("historySection"),
+    historyText: $("historyText"),
+    personStorySection: $("personStorySection"),
+    personStoryText: $("personStoryText"),
+    fatalMessage: $("fatalMessage"),
+    fatalTitle: $("fatalTitle"),
+    fatalText: $("fatalText"),
+    retryButton: $("retryButton")
   };
 
   let people = [];
   let currentPersonId = null;
   let timeoutId = null;
   let jsonpScript = null;
-
-  function setStatus(text, type = "") {
-    elements.dataStatus.textContent = text;
-    elements.dataStatus.classList.remove("is-ok", "is-error");
-    if (type) elements.dataStatus.classList.add(type);
-  }
-
-  function showMessage(title, text, isError = false) {
-    elements.personDetail.hidden = true;
-    elements.initialMessage.hidden = false;
-    elements.initialMessage.innerHTML = "";
-
-    const heading = document.createElement("h2");
-    heading.textContent = title;
-    const paragraph = document.createElement("p");
-    paragraph.textContent = text;
-    elements.initialMessage.append(heading, paragraph);
-
-    if (isError) setStatus("データ取得エラー", "is-error");
-  }
 
   function parseParagraphs(value) {
     return String(value || "")
@@ -68,16 +137,19 @@
       .map((line) => line.trim())
       .filter(Boolean)
       .map((line) => {
-        const fullWidthIndex = line.indexOf("｜");
-        const normalIndex = line.indexOf("|");
-        const separatorIndex = fullWidthIndex >= 0 ? fullWidthIndex : normalIndex;
-
-        if (separatorIndex < 0) return [line, ""];
-        return [
-          line.slice(0, separatorIndex).trim(),
-          line.slice(separatorIndex + 1).trim()
-        ];
+        const full = line.indexOf("｜");
+        const normal = line.indexOf("|");
+        const at = full >= 0 ? full : normal;
+        return at < 0 ? [line, ""] : [line.slice(0, at).trim(), line.slice(at + 1).trim()];
       });
+  }
+
+  function parseList(value) {
+    return String(value || "")
+      .replace(/\r\n/g, "\n")
+      .split(/\n|｜|\||、|,/)
+      .map((item) => item.trim())
+      .filter(Boolean);
   }
 
   function normalizePerson(raw) {
@@ -85,56 +157,68 @@
       id: String(raw.id || "").trim(),
       name: String(raw.name || "").trim(),
       reading: String(raw.reading || "").trim(),
+      status: String(raw.status || "").trim(),
       role: String(raw.role || "").trim(),
       subtitle: String(raw.subtitle || "").trim(),
+      tags: parseList(raw.tags),
+      mainArea: String(raw.mainArea || "").trim(),
+      themes: String(raw.themes || "").trim(),
+      currentWork: String(raw.currentWork || "").trim(),
+      availableTime: String(raw.availableTime || "").trim(),
+      story: parseParagraphs(raw.story),
+      values: parseList(raw.values),
+      together: String(raw.together || "").trim(),
+      questions: parseList(raw.questions),
+      likes: parseList(raw.likes),
+      influences: parseParagraphs(raw.influences),
       profile: parsePairs(raw.profile),
       features: parseParagraphs(raw.features),
       history: parseParagraphs(raw.history),
+      personStory: parseParagraphs(raw.personStory),
       works: parsePairs(raw.works),
       hobbies: parsePairs(raw.hobbies),
       favorites: parsePairs(raw.favorites),
       imageUrl: String(raw.imageUrl || "").trim(),
-      order: Number(raw.order || 9999)
+      order: Number(raw.order || 9999),
+      updatedAt: String(raw.updatedAt || "").trim()
     };
   }
 
-  function renderPersonList(query = "") {
-    const normalizedQuery = query.trim().toLowerCase();
-    const filtered = people.filter((person) => {
-      const haystack = `${person.name} ${person.reading} ${person.role} ${person.subtitle}`.toLowerCase();
-      return haystack.includes(normalizedQuery);
+  function makeChip(text) {
+    const span = document.createElement("span");
+    span.className = "chip";
+    span.textContent = text;
+    return span;
+  }
+
+  function fillChips(target, values) {
+    target.innerHTML = "";
+    values.forEach((value) => target.appendChild(makeChip(value)));
+  }
+
+  function renderParagraphs(target, paragraphs) {
+    target.innerHTML = "";
+    paragraphs.forEach((text) => {
+      const p = document.createElement("p");
+      p.textContent = text;
+      target.appendChild(p);
     });
+  }
 
-    elements.personList.innerHTML = "";
-
-    if (!filtered.length) {
-      const empty = document.createElement("div");
-      empty.className = "empty-state";
-      empty.textContent = people.length ? "該当する人物がありません。" : "公開中の人物データがありません。";
-      elements.personList.appendChild(empty);
-      return;
-    }
-
-    filtered.forEach((person) => {
-      const button = document.createElement("button");
-      button.className = `person-item${person.id === currentPersonId ? " is-active" : ""}`;
-      button.type = "button";
-      button.dataset.personId = person.id;
-
-      const name = document.createElement("span");
-      name.className = "person-name";
-      name.textContent = person.name;
-      button.appendChild(name);
-
-      if (person.role) {
-        const role = document.createElement("span");
-        role.className = "person-role";
-        role.textContent = person.role;
-        button.appendChild(role);
+  function renderPairs(target, pairs) {
+    target.innerHTML = "";
+    pairs.forEach(([label, body]) => {
+      const card = document.createElement("div");
+      card.className = "mini-card";
+      const title = document.createElement("strong");
+      title.textContent = label;
+      card.appendChild(title);
+      if (body) {
+        const p = document.createElement("p");
+        p.textContent = body;
+        card.appendChild(p);
       }
-
-      button.addEventListener("click", () => selectPerson(person.id));
-      elements.personList.appendChild(button);
+      target.appendChild(card);
     });
   }
 
@@ -154,176 +238,361 @@
     });
   }
 
-  function renderParagraphs(target, paragraphs) {
-    target.innerHTML = "";
-    paragraphs.forEach((text) => {
-      const p = document.createElement("p");
-      p.textContent = text;
-      target.appendChild(p);
-    });
-  }
-
-  function createAccordion(target, items) {
-    target.innerHTML = "";
-    items.forEach(([label, content], index) => {
+  function renderQuestions(questions) {
+    elements.questionList.innerHTML = "";
+    questions.forEach((question) => {
       const item = document.createElement("div");
-      item.className = `accordion-item${index === 0 ? " open" : ""}`;
-
-      const trigger = document.createElement("button");
-      trigger.type = "button";
-      trigger.className = "accordion-trigger";
-      trigger.setAttribute("aria-expanded", String(index === 0));
-
-      const title = document.createElement("span");
-      title.textContent = label;
-      const arrow = document.createElement("span");
-      arrow.textContent = "▾";
-      trigger.append(title, arrow);
-
-      const body = document.createElement("div");
-      body.className = "accordion-body";
-      body.textContent = content || "詳細情報はありません。";
-
-      trigger.addEventListener("click", () => {
-        const isOpen = item.classList.toggle("open");
-        trigger.setAttribute("aria-expanded", String(isOpen));
-      });
-
-      item.append(trigger, body);
-      target.appendChild(item);
+      item.className = "question-card";
+      item.textContent = question;
+      elements.questionList.appendChild(item);
     });
   }
 
-  function toggleSection(section, hasContent) {
-    section.hidden = !hasContent;
+  function renderQuickFacts(person) {
+    const facts = [
+      ["主な活動エリア", person.mainArea],
+      ["関心のあるテーマ", person.themes],
+      ["いま関わっていること", person.currentWork],
+      ["つながりやすい時間", person.availableTime]
+    ].filter(([, value]) => value);
+
+    elements.quickFacts.innerHTML = "";
+    facts.forEach(([label, value]) => {
+      const row = document.createElement("div");
+      row.className = "fact-row";
+      const dt = document.createElement("dt");
+      const dd = document.createElement("dd");
+      dt.textContent = label;
+      dd.textContent = value;
+      row.append(dt, dd);
+      elements.quickFacts.appendChild(row);
+    });
+    elements.quickFactsSection.hidden = facts.length === 0;
   }
 
-  function renderDetail(personId) {
-    const person = people.find((item) => item.id === personId);
-    if (!person) return;
+  function setHero(person, compact = false) {
+    const initial = (person.name || "人").slice(0, 1);
+    if (compact) return;
+    elements.heroInitial.textContent = initial;
+    if (person.imageUrl) {
+      elements.detailImage.src = person.imageUrl;
+      elements.detailImage.alt = `${person.name}の写真`;
+      elements.detailImage.hidden = false;
+      elements.heroPlaceholder.hidden = true;
+      elements.detailImage.onerror = () => {
+        elements.detailImage.hidden = true;
+        elements.heroPlaceholder.hidden = false;
+      };
+    } else {
+      elements.detailImage.hidden = true;
+      elements.heroPlaceholder.hidden = false;
+    }
+  }
 
-    elements.initialMessage.hidden = true;
-    elements.personDetail.hidden = false;
-    elements.detailName.textContent = person.name || "名称未設定";
+  function createCard(person) {
+    const article = document.createElement("article");
+    article.className = "person-card";
+    article.tabIndex = 0;
+    article.setAttribute("role", "button");
+    article.setAttribute("aria-label", `${person.name}のプロフィールを見る`);
+
+    const visual = document.createElement("div");
+    visual.className = "card-visual";
+    if (person.imageUrl) {
+      const img = document.createElement("img");
+      img.src = person.imageUrl;
+      img.alt = `${person.name}の写真`;
+      img.loading = "lazy";
+      img.onerror = () => {
+        img.remove();
+        const fallback = document.createElement("div");
+        fallback.className = "card-placeholder";
+        fallback.textContent = (person.name || "人").slice(0, 1);
+        visual.appendChild(fallback);
+      };
+      visual.appendChild(img);
+    } else {
+      const fallback = document.createElement("div");
+      fallback.className = "card-placeholder";
+      fallback.textContent = (person.name || "人").slice(0, 1);
+      visual.appendChild(fallback);
+    }
+
+    const body = document.createElement("div");
+    body.className = "card-body";
+    const nameRow = document.createElement("div");
+    nameRow.className = "card-name-row";
+    const name = document.createElement("h2");
+    name.className = "card-name";
+    name.textContent = person.name;
+    nameRow.appendChild(name);
+    if (person.status) {
+      const status = document.createElement("span");
+      status.className = "status-badge";
+      status.innerHTML = '<span class="status-dot"></span>';
+      status.appendChild(document.createTextNode(person.status));
+      nameRow.appendChild(status);
+    }
+    body.appendChild(nameRow);
+
+    if (person.role) {
+      const role = document.createElement("p");
+      role.className = "card-role";
+      role.textContent = person.role;
+      body.appendChild(role);
+    }
+    if (person.subtitle) {
+      const subtitle = document.createElement("p");
+      subtitle.className = "card-subtitle";
+      subtitle.textContent = person.subtitle;
+      body.appendChild(subtitle);
+    }
+    if (person.tags.length) {
+      const chips = document.createElement("div");
+      chips.className = "chip-row";
+      person.tags.slice(0, 4).forEach((tag) => chips.appendChild(makeChip(tag)));
+      body.appendChild(chips);
+    }
+
+    const facts = [
+      ["主な活動エリア", person.mainArea],
+      ["関心テーマ", person.themes],
+      ["いま関わっていること", person.currentWork],
+      ["つながりやすい時間", person.availableTime]
+    ].filter(([, value]) => value);
+    if (facts.length) {
+      const dl = document.createElement("dl");
+      dl.className = "card-facts";
+      facts.forEach(([label, value]) => {
+        const wrap = document.createElement("div");
+        wrap.className = "card-fact";
+        const dt = document.createElement("dt");
+        const dd = document.createElement("dd");
+        dt.textContent = label;
+        dd.textContent = value;
+        wrap.append(dt, dd);
+        dl.appendChild(wrap);
+      });
+      body.appendChild(dl);
+    }
+
+    article.append(visual, body);
+    const open = () => openPerson(person.id, true);
+    article.addEventListener("click", open);
+    article.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        open();
+      }
+    });
+    return article;
+  }
+
+  function renderPersonList(query = "") {
+    const q = query.trim().toLowerCase();
+    const filtered = people.filter((person) => {
+      const text = [
+        person.name, person.reading, person.role, person.subtitle,
+        person.tags.join(" "), person.mainArea, person.themes, person.currentWork
+      ].join(" ").toLowerCase();
+      return text.includes(q);
+    });
+
+    elements.personList.innerHTML = "";
+    elements.resultCount.textContent = `${filtered.length}人`;
+
+    if (!filtered.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty-list";
+      empty.textContent = people.length ? "条件に合う人物が見つかりませんでした。" : "公開中の人物がありません。";
+      elements.personList.appendChild(empty);
+      return;
+    }
+    filtered.forEach((person) => elements.personList.appendChild(createCard(person)));
+  }
+
+  function toggleSection(element, visible) {
+    element.hidden = !visible;
+  }
+
+  function renderDetail(person) {
+    currentPersonId = person.id;
+    elements.topbarPersonName.textContent = person.name;
+    elements.detailName.textContent = person.name;
+    setHero(person);
+
+    elements.statusText.textContent = person.status;
+    elements.detailStatus.hidden = !person.status;
     elements.detailRole.textContent = person.role;
     elements.detailRole.hidden = !person.role;
     elements.detailSubtitle.textContent = person.subtitle;
     elements.detailSubtitle.hidden = !person.subtitle;
+    fillChips(elements.detailTags, person.tags);
+    elements.detailTags.hidden = person.tags.length === 0;
 
-    if (person.imageUrl) {
-      elements.detailImage.style.backgroundImage = `url(${JSON.stringify(person.imageUrl)})`;
-      elements.detailImage.style.backgroundColor = "#d8c1aa";
-    } else {
-      elements.detailImage.style.backgroundImage = "linear-gradient(135deg, #d8c1aa 0%, #b37e57 45%, #7a5847 100%)";
-    }
-
+    renderParagraphs(elements.storyText, person.story);
+    toggleSection(elements.storySection, person.story.length > 0);
     renderProfile(person.profile);
-    renderParagraphs(elements.featureText, person.features);
-    renderParagraphs(elements.historyText, person.history);
-    createAccordion(elements.worksAccordion, person.works);
-    createAccordion(elements.hobbiesAccordion, person.hobbies);
-    createAccordion(elements.favoritesAccordion, person.favorites);
-
     toggleSection(elements.profileSection, person.profile.length > 0);
+    renderParagraphs(elements.featureText, person.features);
     toggleSection(elements.featureSection, person.features.length > 0);
-    toggleSection(elements.historySection, person.history.length > 0);
-    toggleSection(elements.worksSection, person.works.length > 0);
+    fillChips(elements.valueChips, person.values);
+    toggleSection(elements.valuesSummarySection, person.values.length > 0);
+    elements.togetherText.textContent = person.together;
+    toggleSection(elements.togetherSection, Boolean(person.together));
+
+    renderQuestions(person.questions);
+    toggleSection(elements.questionsSection, person.questions.length > 0);
+    fillChips(elements.likesChips, person.likes);
+    toggleSection(elements.likesSection, person.likes.length > 0);
+    renderParagraphs(elements.influencesText, person.influences);
+    toggleSection(elements.influencesSection, person.influences.length > 0);
+    renderPairs(elements.hobbiesList, person.hobbies);
     toggleSection(elements.hobbiesSection, person.hobbies.length > 0);
+    renderPairs(elements.favoritesList, person.favorites);
     toggleSection(elements.favoritesSection, person.favorites.length > 0);
+
+    renderQuickFacts(person);
+    renderPairs(elements.worksList, person.works);
+    toggleSection(elements.worksSection, person.works.length > 0);
+    renderParagraphs(elements.historyText, person.history);
+    toggleSection(elements.historySection, person.history.length > 0);
+    renderParagraphs(elements.personStoryText, person.personStory);
+    toggleSection(elements.personStorySection, person.personStory.length > 0);
+
+    setActiveTab("profile");
   }
 
-  function selectPerson(personId) {
-    currentPersonId = personId;
-    renderPersonList(elements.personSearchInput.value);
-    renderDetail(personId);
+  function setActiveTab(tabName) {
+    document.querySelectorAll(".detail-tab").forEach((button) => {
+      button.classList.toggle("is-active", button.dataset.tab === tabName);
+    });
+    document.querySelectorAll(".tab-panel").forEach((panel) => {
+      panel.classList.toggle("is-active", panel.dataset.panel === tabName);
+    });
+  }
 
-    // スマホでは人物選択後にリストを閉じ、本文を読みやすくする。
-    if (window.matchMedia("(max-width: 900px)").matches) {
-      elements.personDropdownTrigger.classList.remove("is-open");
-      elements.personDropdownTrigger.setAttribute("aria-expanded", "false");
-      elements.personDropdownBody.classList.add("is-hidden");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+  function showDirectory(updateHistory = false) {
+    elements.detailView.hidden = true;
+    elements.directoryView.hidden = false;
+    elements.fatalMessage.hidden = true;
+    currentPersonId = null;
+    if (updateHistory) history.pushState({ view: "directory" }, "", location.pathname + location.search);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+
+  function openPerson(personId, updateHistory = false) {
+    const person = people.find((item) => item.id === personId);
+    if (!person) return;
+    renderDetail(person);
+    elements.directoryView.hidden = true;
+    elements.detailView.hidden = false;
+    elements.fatalMessage.hidden = true;
+    if (updateHistory) history.pushState({ view: "person", personId }, "", `#person=${encodeURIComponent(personId)}`);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+
+  function applyInitialRoute() {
+    const match = location.hash.match(/^#person=(.+)$/);
+    if (match) {
+      const id = decodeURIComponent(match[1]);
+      if (people.some((person) => person.id === id)) {
+        openPerson(id, false);
+        return;
+      }
     }
+    showDirectory(false);
+  }
+
+  function finishLoad(rawPeople, modeText = "") {
+    people = rawPeople
+      .map(normalizePerson)
+      .filter((person) => person.id && person.name)
+      .sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, "ja"));
+    elements.dataStatus.textContent = modeText;
+    elements.dataStatus.classList.remove("is-error");
+    renderPersonList(elements.personSearchInput.value);
+    applyInitialRoute();
+  }
+
+  function showFatal(title, text) {
+    elements.directoryView.hidden = true;
+    elements.detailView.hidden = true;
+    elements.fatalMessage.hidden = false;
+    elements.fatalTitle.textContent = title;
+    elements.fatalText.textContent = text;
   }
 
   function clearRequestTimer() {
-    if (timeoutId) {
-      window.clearTimeout(timeoutId);
-      timeoutId = null;
-    }
+    if (timeoutId) window.clearTimeout(timeoutId);
+    timeoutId = null;
   }
 
   function cleanupJsonpScript() {
-    if (jsonpScript && jsonpScript.parentNode) jsonpScript.parentNode.removeChild(jsonpScript);
+    if (jsonpScript?.parentNode) jsonpScript.parentNode.removeChild(jsonpScript);
     jsonpScript = null;
   }
 
   window.wikiDataCallback = (payload) => {
     clearRequestTimer();
     cleanupJsonpScript();
-
     if (!payload || payload.ok !== true || !Array.isArray(payload.people)) {
-      showMessage("データを取得できませんでした", payload?.error || "Apps Script 側の設定を確認してください。", true);
+      showFatal("データを取得できませんでした", payload?.error || "Apps Script 側の設定を確認してください。");
       return;
     }
-
-    people = payload.people
-      .map(normalizePerson)
-      .filter((person) => person.id && person.name)
-      .sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, "ja"));
-
-    setStatus(`${people.length}人を読込済`, "is-ok");
-    renderPersonList();
-
-    if (!people.length) {
-      showMessage("公開中の人物がありません", "スプレッドシートの「公開」列をTRUEにすると表示されます。", false);
-      return;
-    }
-
-    currentPersonId = people[0].id;
-    renderPersonList();
-    renderDetail(currentPersonId);
+    finishLoad(payload.people, "スプレッドシート連携");
   };
 
   function loadWikiData() {
     const url = String(config.GAS_WEB_APP_URL || "").trim();
-    if (!url || url.includes("PASTE_YOUR_GAS_WEB_APP_URL_HERE")) {
-      elements.personList.innerHTML = '<div class="empty-state">config.js に Apps Script のウェブアプリURLを設定してください。</div>';
-      showMessage("初期設定が必要です", "config.js に Google Apps Script の /exec URL を貼り付けると、スプレッドシートの人物データを表示します。", true);
-      setStatus("URL未設定", "is-error");
+    const missing = !url || url.includes("PASTE_YOUR_GAS_WEB_APP_URL_HERE");
+    if (missing) {
+      if (config.USE_DEMO_DATA_WHEN_URL_MISSING !== false) {
+        finishLoad(demoPeople, "デモデータ表示中");
+      } else {
+        showFatal("初期設定が必要です", "config.js にGoogle Apps Scriptの /exec URLを設定してください。");
+      }
       return;
     }
 
-    setStatus("スプレッドシート読込中…");
+    elements.dataStatus.textContent = "読込中…";
     const callback = encodeURIComponent(config.CALLBACK_NAME || "wikiDataCallback");
     const separator = url.includes("?") ? "&" : "?";
-    const src = `${url}${separator}prefix=${callback}&_=${Date.now()}`;
-
     jsonpScript = document.createElement("script");
-    jsonpScript.src = src;
+    jsonpScript.src = `${url}${separator}prefix=${callback}&_=${Date.now()}`;
     jsonpScript.async = true;
     jsonpScript.onerror = () => {
       clearRequestTimer();
       cleanupJsonpScript();
-      showMessage("データを取得できませんでした", "Apps Script の公開設定または config.js のURLを確認してください。", true);
+      showFatal("データを取得できませんでした", "Apps Scriptの公開設定またはconfig.jsのURLを確認してください。");
     };
     document.body.appendChild(jsonpScript);
-
     timeoutId = window.setTimeout(() => {
       cleanupJsonpScript();
-      showMessage("読み込みがタイムアウトしました", "通信環境または Apps Script の公開設定を確認してください。", true);
+      showFatal("読み込みがタイムアウトしました", "通信環境またはApps Scriptの公開設定を確認してください。");
     }, Number(config.REQUEST_TIMEOUT_MS || 15000));
   }
 
-  elements.personSearchInput.addEventListener("input", (event) => {
-    renderPersonList(event.target.value);
+  elements.searchToggleButton.addEventListener("click", () => {
+    const open = elements.searchPanel.hidden;
+    elements.searchPanel.hidden = !open;
+    elements.searchToggleButton.setAttribute("aria-expanded", String(open));
+    if (open) window.setTimeout(() => elements.personSearchInput.focus(), 0);
   });
 
-  elements.personDropdownTrigger.addEventListener("click", () => {
-    const isOpen = elements.personDropdownTrigger.classList.toggle("is-open");
-    elements.personDropdownTrigger.setAttribute("aria-expanded", String(isOpen));
-    elements.personDropdownBody.classList.toggle("is-hidden", !isOpen);
+  elements.personSearchInput.addEventListener("input", (event) => renderPersonList(event.target.value));
+  elements.backButton.addEventListener("click", () => history.length > 1 ? history.back() : showDirectory(true));
+  elements.retryButton.addEventListener("click", () => location.reload());
+
+  document.querySelectorAll(".detail-tab").forEach((button) => {
+    button.addEventListener("click", () => {
+      setActiveTab(button.dataset.tab);
+      const top = document.querySelector(".person-heading").offsetTop;
+      window.scrollTo({ top, behavior: "smooth" });
+    });
   });
+
+  window.addEventListener("popstate", () => applyInitialRoute());
 
   loadWikiData();
 })();

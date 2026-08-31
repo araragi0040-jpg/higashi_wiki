@@ -2,95 +2,162 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f4f2ee" />
-  <title>コミュニティ名鑑</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#fbfaf7" />
+  <title>名鑑</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <header class="topbar">
-      <div>
-        <p class="eyebrow">内部Wiki / 閲覧版</p>
-        <h1>コミュニティ名鑑</h1>
-      </div>
-      <div class="topbar-meta" id="dataStatus">スプレッドシート読込中…</div>
-    </header>
-
-    <main class="layout">
-      <aside class="sidebar">
-        <div class="sidebar-card">
-          <button class="dropdown-trigger is-open" id="personDropdownTrigger" aria-expanded="true">
-            <span>人物リスト</span>
-            <span class="arrow">▾</span>
-          </button>
-
-          <div class="dropdown-body" id="personDropdownBody">
-            <div class="search-box">
-              <input type="search" id="personSearchInput" placeholder="人物名で検索" autocomplete="off" />
-            </div>
-            <div class="person-list" id="personList">
-              <div class="empty-state">読み込んでいます…</div>
-            </div>
-          </div>
+  <main class="app" id="app">
+    <!-- 名鑑一覧 -->
+    <section class="view directory-view" id="directoryView">
+      <header class="directory-header">
+        <div>
+          <p class="eyebrow">COMMUNITY DIRECTORY</p>
+          <h1>名鑑</h1>
+          <p class="directory-lead">人となりや活動、想いを知るための人物名鑑</p>
         </div>
-      </aside>
+        <button class="icon-button" id="searchToggleButton" type="button" aria-label="検索を開く" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.6-3.6"></path></svg>
+        </button>
+      </header>
 
-      <section class="content">
-        <article class="detail-card" id="detailCard">
-          <div class="empty-detail" id="initialMessage">
-            <h2>人物データを読み込んでいます</h2>
-            <p>Googleスプレッドシートの公開データを取得しています。</p>
-          </div>
+      <div class="search-panel" id="searchPanel" hidden>
+        <label class="search-field">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.6-3.6"></path></svg>
+          <input type="search" id="personSearchInput" placeholder="名前・活動・関心テーマから検索" autocomplete="off" />
+        </label>
+      </div>
 
-          <div id="personDetail" hidden>
-            <div class="hero-image" id="detailImage"></div>
+      <div class="directory-meta">
+        <span id="resultCount">読込中…</span>
+        <span class="data-status" id="dataStatus"></span>
+      </div>
 
-            <div class="detail-inner">
-              <div class="title-row">
-                <div>
-                  <p class="detail-kicker">人物ファイル</p>
-                  <h2 id="detailName">-</h2>
-                  <p class="detail-role" id="detailRole"></p>
-                  <p class="detail-subtitle" id="detailSubtitle">-</p>
-                </div>
-              </div>
+      <div class="person-grid" id="personList">
+        <div class="loading-card">人物データを読み込んでいます…</div>
+      </div>
+    </section>
 
-              <section class="section-block" id="profileSection">
-                <h3>プロフィール</h3>
-                <div class="profile-list" id="profileList"></div>
-              </section>
+    <!-- 人物詳細 -->
+    <section class="view detail-view" id="detailView" hidden>
+      <header class="detail-topbar">
+        <button class="back-button" id="backButton" type="button" aria-label="名鑑に戻る">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+        </button>
+        <div class="detail-topbar-title">
+          <strong id="topbarPersonName">プロフィール詳細</strong>
+          <span>名鑑</span>
+        </div>
+        <div class="topbar-spacer" aria-hidden="true"></div>
+      </header>
 
-              <section class="section-block" id="featureSection">
-                <h3>主な特徴・人物像</h3>
-                <div class="text-content" id="featureText"></div>
-              </section>
+      <div class="detail-hero" id="detailHero">
+        <img id="detailImage" alt="" hidden />
+        <div class="hero-placeholder" id="heroPlaceholder"><span id="heroInitial">人</span></div>
+      </div>
 
-              <section class="section-block" id="historySection">
-                <h3>人物</h3>
-                <div class="text-content" id="historyText"></div>
-              </section>
+      <div class="person-heading">
+        <div class="name-line">
+          <h2 id="detailName">-</h2>
+          <span class="status-badge" id="detailStatus" hidden><span class="status-dot"></span><span id="statusText"></span></span>
+        </div>
+        <p class="detail-role" id="detailRole" hidden></p>
+        <p class="detail-subtitle" id="detailSubtitle"></p>
+        <div class="chip-row" id="detailTags"></div>
+      </div>
 
-              <section class="section-block" id="worksSection">
-                <h3>活動事業</h3>
-                <div class="accordion-list" id="worksAccordion"></div>
-              </section>
+      <nav class="detail-tabs" aria-label="人物詳細タブ">
+        <button class="detail-tab is-active" type="button" data-tab="profile">プロフィール</button>
+        <button class="detail-tab" type="button" data-tab="values">想い・価値観</button>
+        <button class="detail-tab" type="button" data-tab="activity">活動・経歴</button>
+      </nav>
 
-              <section class="section-block" id="hobbiesSection">
-                <h3>趣味・嗜好</h3>
-                <div class="accordion-list" id="hobbiesAccordion"></div>
-              </section>
+      <div class="tab-panels">
+        <section class="tab-panel is-active" data-panel="profile">
+          <section class="content-section" id="storySection" hidden>
+            <h3>ストーリー</h3>
+            <div class="body-text" id="storyText"></div>
+          </section>
 
-              <section class="section-block" id="favoritesSection">
-                <h3>好きなもの / 作品</h3>
-                <div class="accordion-list" id="favoritesAccordion"></div>
-              </section>
-            </div>
-          </div>
-        </article>
-      </section>
-    </main>
-  </div>
+          <section class="content-section" id="profileSection" hidden>
+            <h3>プロフィール</h3>
+            <div class="profile-table" id="profileList"></div>
+          </section>
+
+          <section class="content-section" id="featureSection" hidden>
+            <h3>こんな人</h3>
+            <div class="body-text" id="featureText"></div>
+          </section>
+
+          <section class="content-section" id="valuesSummarySection" hidden>
+            <h3>大切にしている価値観</h3>
+            <div class="chip-row large" id="valueChips"></div>
+          </section>
+
+          <section class="content-section" id="togetherSection" hidden>
+            <h3>こんなことを一緒にしたい！</h3>
+            <div class="soft-callout" id="togetherText"></div>
+          </section>
+        </section>
+
+        <section class="tab-panel" data-panel="values">
+          <section class="content-section" id="questionsSection" hidden>
+            <h3>よく考える問い</h3>
+            <div class="question-list" id="questionList"></div>
+          </section>
+
+          <section class="content-section" id="likesSection" hidden>
+            <h3>好きなこと・ワクワクすること</h3>
+            <div class="chip-row large" id="likesChips"></div>
+          </section>
+
+          <section class="content-section" id="influencesSection" hidden>
+            <h3>影響を受けたもの</h3>
+            <div class="body-text" id="influencesText"></div>
+          </section>
+
+          <section class="content-section" id="hobbiesSection" hidden>
+            <h3>趣味・嗜好</h3>
+            <div class="mini-card-list" id="hobbiesList"></div>
+          </section>
+
+          <section class="content-section" id="favoritesSection" hidden>
+            <h3>好きなもの / 作品</h3>
+            <div class="mini-card-list" id="favoritesList"></div>
+          </section>
+        </section>
+
+        <section class="tab-panel" data-panel="activity">
+          <section class="content-section" id="quickFactsSection" hidden>
+            <h3>現在の活動</h3>
+            <div class="fact-list" id="quickFacts"></div>
+          </section>
+
+          <section class="content-section" id="worksSection" hidden>
+            <h3>活動・事業</h3>
+            <div class="mini-card-list" id="worksList"></div>
+          </section>
+
+          <section class="content-section" id="historySection" hidden>
+            <h3>活動・経歴</h3>
+            <div class="body-text" id="historyText"></div>
+          </section>
+
+          <section class="content-section" id="personStorySection" hidden>
+            <h3>人物・エピソード</h3>
+            <div class="body-text" id="personStoryText"></div>
+          </section>
+        </section>
+      </div>
+    </section>
+
+    <section class="fatal-message" id="fatalMessage" hidden>
+      <h2 id="fatalTitle">データを取得できませんでした</h2>
+      <p id="fatalText"></p>
+      <button type="button" id="retryButton">再読み込み</button>
+    </section>
+  </main>
 
   <script src="config.js"></script>
   <script src="script.js"></script>
