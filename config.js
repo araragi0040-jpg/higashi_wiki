@@ -1,6 +1,6 @@
 window.WIKI_CONFIG = {
   // Google Apps Script をウェブアプリとしてデプロイした /exec URL を貼り付けます。
-  GAS_WEB_APP_URL: "PASTE_YOUR_GAS_WEB_APP_URL_HERE",
+  GAS_WEB_APP_URL: "https://script.google.com/macros/s/AKfycbwxSjr_PceBC26FklqTztPPjyeCIR_cX0JcgOcX4lQJAJLuVDe_XE1p1ZsJ1cbob9O3Aw/exec",
   CALLBACK_NAME: "wikiDataCallback",
   REQUEST_TIMEOUT_MS: 15000,
 
