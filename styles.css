@@ -248,3 +248,45 @@ svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width:
   .card-fact { grid-template-columns: 98px 1fr; }
   .detail-view { min-height: calc(100vh - 56px); }
 }
+
+/* v002.3: one question / interest per item, no extra navigation. */
+#questionList { counter-reset: wiki-question; gap: 10px; }
+#questionList .question-card {
+  counter-increment: wiki-question;
+  padding: 14px 15px 14px 48px;
+  font-size: 14px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+#questionList .question-card::before {
+  content: counter(wiki-question, decimal-leading-zero);
+  left: 14px; top: 15px;
+  font-size: 11px; font-weight: 750;
+  color: #877767;
+}
+/* Clearly distinguish every "好きなこと" entry; keep the existing tag palette. */
+#likesChips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+#likesChips .chip {
+  display: flex; justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(128,111,96,.12);
+  font-size: 13.5px;
+  line-height: 1.5;
+  text-align: center;
+  min-height: 44px;
+  padding: 10px 9px;
+  overflow-wrap: anywhere;
+}
+#hobbiesList .mini-card, #favoritesList .mini-card {
+  padding: 15px 16px;
+}
+#hobbiesList .mini-card + .mini-card, #favoritesList .mini-card + .mini-card {
+  margin-top: 2px;
+}
+@media (max-width: 350px) {
+  #likesChips { grid-template-columns: 1fr; }
+}

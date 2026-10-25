@@ -152,20 +152,26 @@
       .filter(([label, body]) => label || body);
   }
 
+  // List items can be delimited by a newline, ◆, ||, or ｜.
+  // ◆ is recommended because spreadsheet copy/paste sometimes flattens newlines.
+  // Keep the old comma-separated format for backward compatibility.
   function parseList(value) {
     return String(value || "")
-      .replace(/\r\n/g, "\n")
-      .split(/\n|｜|\||、|,/)
-      .map((item) => item.trim())
+      .replace(/\r\n?/g, "\n")
+      .replace(/\\n/g, "\n")
+      .split(/\n|◆|\|\||｜|\||、|，|,/)
+      .map((item) => item.trim().replace(/^[・●■•]\s*/, ""))
       .filter(Boolean);
   }
 
-  // A question is one line; Japanese commas inside a question are not separators.
+  // Don't split at Japanese commas: a question may contain 「A、B」.
+  // Newline, ◆ and || each mark the start of another question.
   function parseQuestions(value) {
     return String(value || "")
-      .replace(/\r\n/g, "\n")
-      .split("\n")
-      .map((item) => item.trim())
+      .replace(/\r\n?/g, "\n")
+      .replace(/\\n/g, "\n")
+      .split(/\n|◆|\|\|/)
+      .map((item) => item.trim().replace(/^(?:[・●■•]|[0-9]+[.)．、])\s*/, ""))
       .filter(Boolean);
   }
 
