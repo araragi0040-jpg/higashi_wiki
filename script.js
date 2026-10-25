@@ -130,18 +130,26 @@
       .filter(Boolean);
   }
 
+  /**
+   * 見出し｜内容を1項目として取り出します。
+   * 推奨: ◆見出し｜内容 (1項目1行)
+   * 改行が消えた貼り付けにも備えて「◆」でも区切ります。
+   * 既存の「見出し｜内容」の改行区切りもそのまま利用できます。
+   */
   function parsePairs(value) {
     return String(value || "")
-      .replace(/\r\n/g, "\n")
-      .split("\n")
-      .map((line) => line.trim())
+      .replace(/\r\n?/g, "\n")
+      .replace(/\\n/g, "\n")
+      .split(/\n|◆|(?:\s*\|\|\s*)/)
+      .map((line) => line.trim().replace(/^[・●■]\s*/, ""))
       .filter(Boolean)
       .map((line) => {
         const full = line.indexOf("｜");
         const normal = line.indexOf("|");
         const at = full >= 0 ? full : normal;
         return at < 0 ? [line, ""] : [line.slice(0, at).trim(), line.slice(at + 1).trim()];
-      });
+      })
+      .filter(([label, body]) => label || body);
   }
 
   function parseList(value) {
@@ -150,6 +158,34 @@
       .split(/\n|｜|\||、|,/)
       .map((item) => item.trim())
       .filter(Boolean);
+  }
+
+  // A question is one line; Japanese commas inside a question are not separators.
+  function parseQuestions(value) {
+    return String(value || "")
+      .replace(/\r\n/g, "\n")
+      .split("\n")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  // Standard Google Drive share links open a preview page rather than image bytes.
+  // Try the Drive thumbnail endpoint for public/viewable image files.
+  function normalizeImageUrl(value) {
+    const raw = String(value || "").trim();
+    if (!raw) return "";
+    try {
+      const url = new URL(raw, window.location.href);
+      if (url.hostname !== "drive.google.com") return raw;
+      const match = url.pathname.match(/^\/file\/d\/([A-Za-z0-9_-]+)/);
+      const fileId = match?.[1] || url.searchParams.get("id");
+      if (fileId && /^[A-Za-z0-9_-]{10,}$/.test(fileId)) {
+        return `https://drive.google.com/thumbnail?id=${encodeURIComponent(fileId)}&sz=w1600`;
+      }
+      return raw;
+    } catch {
+      return raw;
+    }
   }
 
   function normalizePerson(raw) {
@@ -168,7 +204,7 @@
       story: parseParagraphs(raw.story),
       values: parseList(raw.values),
       together: String(raw.together || "").trim(),
-      questions: parseList(raw.questions),
+      questions: parseQuestions(raw.questions),
       likes: parseList(raw.likes),
       influences: parseParagraphs(raw.influences),
       profile: parsePairs(raw.profile),
@@ -178,7 +214,7 @@
       works: parsePairs(raw.works),
       hobbies: parsePairs(raw.hobbies),
       favorites: parsePairs(raw.favorites),
-      imageUrl: String(raw.imageUrl || "").trim(),
+      imageUrl: normalizeImageUrl(raw.imageUrl),
       order: Number(raw.order || 9999),
       updatedAt: String(raw.updatedAt || "").trim()
     };
@@ -205,11 +241,11 @@
     });
   }
 
-  function renderPairs(target, pairs) {
+  function renderPairs(target, pairs, cardType = "") {
     target.innerHTML = "";
     pairs.forEach(([label, body]) => {
       const card = document.createElement("div");
-      card.className = "mini-card";
+      card.className = cardType === "work" ? "mini-card work-card" : "mini-card";
       const title = document.createElement("strong");
       title.textContent = label;
       card.appendChild(title);
@@ -270,23 +306,37 @@
     elements.quickFactsSection.hidden = facts.length === 0;
   }
 
-  function setHero(person, compact = false) {
-    const initial = (person.name || "人").slice(0, 1);
-    if (compact) return;
-    elements.heroInitial.textContent = initial;
-    if (person.imageUrl) {
-      elements.detailImage.src = person.imageUrl;
-      elements.detailImage.alt = `${person.name}の写真`;
-      elements.detailImage.hidden = false;
-      elements.heroPlaceholder.hidden = true;
-      elements.detailImage.onerror = () => {
-        elements.detailImage.hidden = true;
-        elements.heroPlaceholder.hidden = false;
-      };
-    } else {
-      elements.detailImage.hidden = true;
-      elements.heroPlaceholder.hidden = false;
-    }
+  function setHero(person) {
+    const photo = elements.detailImage;
+    const hero = $("detailHero");
+    const placeholder = elements.heroPlaceholder;
+    elements.heroInitial.textContent = (person.name || "人").slice(0, 1);
+
+    // 前の人物の画像が一瞬表示されないよう、読み込み完了後に切り替えます。
+    photo.onload = null;
+    photo.onerror = null;
+    photo.hidden = true;
+    placeholder.hidden = false;
+    hero.classList.remove("has-photo");
+    photo.removeAttribute("src");
+    if (!person.imageUrl) return;
+
+    const expectedUrl = person.imageUrl;
+    photo.alt = `${person.name}の写真`;
+    photo.onload = () => {
+      if (photo.getAttribute("src") !== expectedUrl) return;
+      photo.hidden = false;
+      placeholder.hidden = true;
+      hero.classList.add("has-photo");
+    };
+    photo.onerror = () => {
+      if (photo.getAttribute("src") !== expectedUrl) return;
+      console.warn("Wiki: 画像を読み込めませんでした。URLと公開権限をご確認ください。");
+      photo.hidden = true;
+      placeholder.hidden = false;
+      hero.classList.remove("has-photo");
+    };
+    photo.src = expectedUrl;
   }
 
   function createCard(person) {
@@ -304,6 +354,7 @@
       img.alt = `${person.name}の写真`;
       img.loading = "lazy";
       img.onerror = () => {
+        console.warn("Wiki: 一覧用画像を読み込めませんでした。共有設定をご確認ください。");
         img.remove();
         const fallback = document.createElement("div");
         fallback.className = "card-placeholder";
@@ -453,7 +504,7 @@
     toggleSection(elements.favoritesSection, person.favorites.length > 0);
 
     renderQuickFacts(person);
-    renderPairs(elements.worksList, person.works);
+    renderPairs(elements.worksList, person.works, "work");
     toggleSection(elements.worksSection, person.works.length > 0);
     renderParagraphs(elements.historyText, person.history);
     toggleSection(elements.historySection, person.history.length > 0);
@@ -465,7 +516,9 @@
 
   function setActiveTab(tabName) {
     document.querySelectorAll(".detail-tab").forEach((button) => {
-      button.classList.toggle("is-active", button.dataset.tab === tabName);
+      const active = button.dataset.tab === tabName;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-selected", String(active));
     });
     document.querySelectorAll(".tab-panel").forEach((panel) => {
       panel.classList.toggle("is-active", panel.dataset.panel === tabName);
@@ -587,8 +640,8 @@
   document.querySelectorAll(".detail-tab").forEach((button) => {
     button.addEventListener("click", () => {
       setActiveTab(button.dataset.tab);
-      const top = document.querySelector(".person-heading").offsetTop;
-      window.scrollTo({ top, behavior: "smooth" });
+      // タブ切替後は本文の冒頭を見せます（大きな写真の再表示を避けます）。
+      document.querySelector(".detail-tabs").scrollIntoView({ block: "start", behavior: "smooth" });
     });
   });
 

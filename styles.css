@@ -101,11 +101,12 @@ svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width:
 .card-visual {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 8.3;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: linear-gradient(135deg, #dce6df, #e9ddd1 52%, #d5c9d8);
 }
-.card-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* 写真全体を表示：一覧でも顔や手足を切り抜かない */
+.card-visual img { width: 100%; height: 100%; object-fit: contain; display: block; background: #f3efea; }
 .card-placeholder { width: 100%; height: 100%; display: grid; place-items: center; font-size: 66px; font-weight: 800; color: rgba(70, 62, 55, .36); }
 .card-body { padding: 17px 17px 18px; }
 .card-name-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -155,9 +156,11 @@ svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width:
 .detail-topbar-title { min-width: 0; display: grid; justify-items: center; line-height: 1.15; }
 .detail-topbar-title strong { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
 .detail-topbar-title span { margin-top: 4px; font-size: 10px; color: var(--muted); }
-.detail-hero { position: relative; aspect-ratio: 16 / 8.5; overflow: hidden; background: linear-gradient(135deg, #dce6df, #e9ddd1 52%, #d5c9d8); }
-.detail-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.hero-placeholder { width: 100%; height: 100%; display: grid; place-items: center; color: rgba(70, 62, 55, .34); font-size: 92px; font-weight: 850; }
+/* 写真の縦横比を維持して全体表示。上限を超える縦長写真もトリミングしません。 */
+.detail-hero { position: relative; display: flex; align-items: center; justify-content: center; min-height: 220px; overflow: hidden; background: linear-gradient(135deg, #dce6df, #e9ddd1 52%, #d5c9d8); }
+.detail-hero.has-photo { min-height: 0; background: #f1ede8; }
+.detail-hero img { display: block; width: 100%; height: auto; max-width: 100%; max-height: min(70svh, 640px); object-fit: contain; object-position: center; }
+.hero-placeholder { width: 100%; aspect-ratio: 16 / 8.5; display: grid; place-items: center; color: rgba(70, 62, 55, .34); font-size: 92px; font-weight: 850; }
 .person-heading { padding: 18px 20px 16px; }
 .name-line { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
 .name-line h2 { margin: 0; font-size: 27px; line-height: 1.25; }
@@ -209,12 +212,39 @@ svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width:
 .fatal-message p { margin: 0; max-width: 480px; font-size: 13px; line-height: 1.8; color: var(--muted); }
 .fatal-message button { margin-top: 20px; padding: 10px 18px; border-radius: 999px; background: var(--text); color: #fff; font-size: 12px; }
 
+/* v002.2: スマホで読める文字サイズと、活動ごとの分離表示 */
+.body-text { font-size: 14px; line-height: 1.95; overflow-wrap: anywhere; }
+.body-text p { margin-bottom: 15px; }
+.profile-row { grid-template-columns: minmax(84px, 30%) minmax(0, 1fr); gap: 12px; font-size: 13px; }
+.profile-value, .fact-row dd { overflow-wrap: anywhere; white-space: pre-wrap; }
+.soft-callout { font-size: 14px; line-height: 1.9; }
+.question-card { font-size: 13.5px; }
+.mini-card { padding: 17px; }
+.mini-card strong { font-size: 14px; }
+.mini-card p { font-size: 13.5px; line-height: 1.85; color: #58534e; }
+/* 活動・事業のみアクセント付きで1件ずつカード表示 */
+#worksList { gap: 12px; }
+.work-card { position: relative; padding: 18px 18px 18px 20px; border-color: #e5dfd7; box-shadow: 0 2px 7px rgba(60, 50, 40, .025); }
+.work-card::before { content: ""; position: absolute; inset: 17px auto 17px 0; width: 3px; background: #b8a18d; border-radius: 3px; }
+.work-card strong { font-size: 15px; color: #36302b; }
+.work-card p { font-size: 14px; line-height: 1.8; }
+.fact-row { grid-template-columns: minmax(96px, 34%) minmax(0,1fr); gap: 12px; font-size: 13px; }
+.card-subtitle { font-size: 14px; }
+.card-fact { font-size: 12px; }
+/* スクロールしてもタブ切替できるように固定。下部タブは増やさない。 */
+.detail-tabs { position: sticky; top: 0; z-index: 15; background: rgba(255,255,255,.97); backdrop-filter: blur(10px); }
+.detail-tabs .detail-tab { font-size: 12px; }
+@media (max-width: 380px) {
+  .tab-panels { padding-left: 16px; padding-right: 16px; }
+  .profile-row { grid-template-columns: minmax(76px, 29%) minmax(0, 1fr); }
+}
+
 @media (min-width: 700px) {
   body { padding: 28px 0; }
-  .app { min-height: calc(100vh - 56px); border-radius: 28px; overflow: hidden; box-shadow: 0 18px 60px rgba(45, 38, 31, .1); }
+  .app { min-height: calc(100vh - 56px); border-radius: 28px; overflow: clip; box-shadow: 0 18px 60px rgba(45, 38, 31, .1); }
   .directory-view { min-height: calc(100vh - 56px); padding-left: 28px; padding-right: 28px; }
   .person-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .card-visual { aspect-ratio: 16 / 9.5; }
+  .card-visual { aspect-ratio: 4 / 3; }
   .card-fact { grid-template-columns: 98px 1fr; }
   .detail-view { min-height: calc(100vh - 56px); }
 }
